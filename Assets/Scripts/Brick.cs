@@ -9,9 +9,11 @@ public class Brick : MonoBehaviour
     public UnityEvent<int> onDestroyed;
     
     public int PointValue;
+    private MainManager mainManager;
 
     void Start()
     {
+        mainManager = GameObject.FindGameObjectWithTag("Main Manager").GetComponent<MainManager>();
         var renderer = GetComponentInChildren<Renderer>();
 
         MaterialPropertyBlock block = new MaterialPropertyBlock();
@@ -36,8 +38,9 @@ public class Brick : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         onDestroyed.Invoke(PointValue);
-        
+
         //slight delay to be sure the ball have time to bounce
+        mainManager.AddPoint(PointValue);
         Destroy(gameObject, 0.2f);
     }
 }
